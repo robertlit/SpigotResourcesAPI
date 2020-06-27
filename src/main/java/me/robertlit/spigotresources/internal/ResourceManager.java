@@ -1,7 +1,6 @@
 package me.robertlit.spigotresources.internal;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import me.robertlit.spigotresources.api.Resource;
 
@@ -22,11 +21,11 @@ public class ResourceManager {
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
         if (fetch || idToResourceMap.get(resourceId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                JsonElement jsonElement = HttpRequester.request(GET_RESOURCE_URL+resourceId);
-                if (jsonElement == null || !jsonElement.isJsonObject()) {
-                    return null;
-                }
-                Resource resource = gson.fromJson(jsonElement, Resource.class);
+//                JsonElement jsonElement = HttpRequester.request(GET_RESOURCE_URL+resourceId);
+//                if (jsonElement == null || !jsonElement.isJsonObject()) {
+//                    return null;
+//                }
+                Resource resource = gson.fromJson(HttpRequester.request(GET_RESOURCE_URL+resourceId), Resource.class);
                 idToResourceMap.put(resourceId, resource);
                 return resource;
             });
@@ -39,14 +38,14 @@ public class ResourceManager {
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId, boolean fetch) {
         if (fetch || authorToResourcesMap.get(authorId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                JsonElement jsonElement = HttpRequester.request(GET_RESOURCES_BY_AUTHOR_URL+authorId);
-                if (jsonElement == null || !jsonElement.isJsonArray() || jsonElement.getAsJsonArray().size() == 0) {
+                Type type = new TypeToken<Collection<Resource>>(){}.getType();
+                Collection<Resource> resources = gson.fromJson(HttpRequester.request(GET_RESOURCES_BY_AUTHOR_URL+authorId), type);
+                if (resources == null) {
                     return Collections.emptyList();
                 }
-                Type type = new TypeToken<Collection<Resource>>(){}.getType();
-                Collection<Resource> resources = Collections.unmodifiableCollection(gson.fromJson(jsonElement, type));
-                authorToResourcesMap.put(authorId, resources);
-                return resources;
+                Collection<Resource> unmodifiable = Collections.unmodifiableCollection(resources);
+                authorToResourcesMap.put(authorId, unmodifiable);
+                return unmodifiable;
             });
         }
         CompletableFuture<Collection<Resource>> future = new CompletableFuture<>();

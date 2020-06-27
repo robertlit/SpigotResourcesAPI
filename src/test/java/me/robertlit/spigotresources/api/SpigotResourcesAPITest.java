@@ -130,6 +130,7 @@ class SpigotResourcesAPITest {
         System.out.println(json);
         Collection<Resource> resources1 = gson.fromJson(json, new TypeToken<Collection<Resource>>(){}.getType());
         System.out.println(resources1);
-        assertEquals(resources, resources1);
+        resources1.removeAll(resources);
+        assertEquals(0, resources1.size());
     }
 }

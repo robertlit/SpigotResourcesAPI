@@ -1,7 +1,6 @@
 package me.robertlit.spigotresources.internal;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import me.robertlit.spigotresources.api.Author;
 
 import java.util.Collections;
@@ -20,11 +19,7 @@ public class AuthorManager {
     public CompletableFuture<Author> getAuthor(int authorId, boolean fetch) {
         if (fetch || idToAuthorMap.get(authorId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                JsonElement jsonElement = HttpRequester.request(GET_AUTHOR_URL+authorId);
-                if (jsonElement == null || !jsonElement.isJsonObject()) {
-                    return null;
-                }
-                Author author = gson.fromJson(jsonElement, Author.class);
+                Author author = gson.fromJson(HttpRequester.request(GET_AUTHOR_URL+authorId), Author.class);
                 idToAuthorMap.put(authorId, author);
                 return author;
             });
