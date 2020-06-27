@@ -1,8 +1,7 @@
 # SpigotResourcesAPI
 a Java wrapper of the Spigot resources REST API ([XenforoResourceManagerAPI](https://github.com/SpigotMC/XenforoResourceManagerAPI))
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#User/Repo)
+[![Release](https://jitpack.io/v/robertlit/SpigotResourcesAPI.svg)](https://jitpack.io/#robertlit/SpigotResourcesAPI)
 
 [Javadoc](https://jitpack.io/com/github/robertlit/SpigotResourcesAPI/1.0/javadoc/)
 
