@@ -21,10 +21,6 @@ public class ResourceManager {
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
         if (fetch || idToResourceMap.get(resourceId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-//                JsonElement jsonElement = HttpRequester.request(GET_RESOURCE_URL+resourceId);
-//                if (jsonElement == null || !jsonElement.isJsonObject()) {
-//                    return null;
-//                }
                 Resource resource = gson.fromJson(HttpRequester.request(GET_RESOURCE_URL+resourceId), Resource.class);
                 idToResourceMap.put(resourceId, resource);
                 return resource;
