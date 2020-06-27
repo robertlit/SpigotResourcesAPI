@@ -26,9 +26,7 @@ public class ResourceManager {
                 return resource;
             });
         }
-        CompletableFuture<Resource> future = new CompletableFuture<>();
-        future.complete(idToResourceMap.get(resourceId));
-        return future;
+        return CompletableFuture.completedFuture(idToResourceMap.get(resourceId));
     }
 
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId, boolean fetch) {
@@ -44,8 +42,6 @@ public class ResourceManager {
                 return unmodifiable;
             });
         }
-        CompletableFuture<Collection<Resource>> future = new CompletableFuture<>();
-        future.complete(new ArrayList<>(authorToResourcesMap.get(authorId)));
-        return future;
+        return CompletableFuture.completedFuture(authorToResourcesMap.get(authorId));
     }
 }

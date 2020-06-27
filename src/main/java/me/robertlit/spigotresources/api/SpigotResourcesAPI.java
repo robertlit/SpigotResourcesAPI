@@ -2,6 +2,7 @@ package me.robertlit.spigotresources.api;
 
 import me.robertlit.spigotresources.internal.AuthorManager;
 import me.robertlit.spigotresources.internal.ResourceManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -31,6 +32,7 @@ public class SpigotResourcesAPI {
      * @param resourceId resource id
      * @return a future which is to be completed with the wanted Resource
      */
+    @NotNull
     public CompletableFuture<Resource> getResource(int resourceId) {
         return getResource(resourceId, fetchByDefault);
     }
@@ -42,6 +44,7 @@ public class SpigotResourcesAPI {
      * @param fetch whether to fetch data or get from cache
      * @return a future which is to be completed with the wanted Resource
      */
+    @NotNull
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
         return resourceManager.getResource(resourceId, fetch);
     }
@@ -53,6 +56,7 @@ public class SpigotResourcesAPI {
      * @param authorId id of the Author
      * @return a future which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
+    @NotNull
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId) {
         return getResourcesByAuthor(authorId, fetchByDefault);
     }
@@ -64,6 +68,7 @@ public class SpigotResourcesAPI {
      * @param fetch whether to fetch data or get from cache
      * @return a future which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
+    @NotNull
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId, boolean fetch) {
         return resourceManager.getResourcesByAuthor(authorId, fetch);
     }
@@ -75,6 +80,7 @@ public class SpigotResourcesAPI {
      * @param authorId author id
      * @return a future which is to be completed with the wanted Author
      */
+    @NotNull
     public CompletableFuture<Author> getAuthor(int authorId) {
         return getAuthor(authorId, fetchByDefault);
     }
@@ -86,6 +92,7 @@ public class SpigotResourcesAPI {
      * @param fetch whether to fetch data or get from cache
      * @return a future which is to be completed with the wanted Author
      */
+    @NotNull
     public CompletableFuture<Author> getAuthor(int authorId, boolean fetch) {
         return authorManager.getAuthor(authorId, fetch);
     }

@@ -24,8 +24,6 @@ public class AuthorManager {
                 return author;
             });
         }
-        CompletableFuture<Author> future = new CompletableFuture<>();
-        future.complete(idToAuthorMap.get(authorId));
-        return future;
+        return CompletableFuture.completedFuture(idToAuthorMap.get(authorId));
     }
 }
