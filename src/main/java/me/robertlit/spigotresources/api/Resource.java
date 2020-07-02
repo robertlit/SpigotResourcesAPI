@@ -1,9 +1,11 @@
 package me.robertlit.spigotresources.api;
 
 import com.google.gson.annotations.JsonAdapter;
+import me.robertlit.spigotresources.internal.HttpRequester;
 import me.robertlit.spigotresources.internal.ResourceJsonAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
@@ -17,6 +19,10 @@ public class Resource {
     protected final String version;
     protected final AuthorData authorData;
     protected final Stats stats;
+    protected final BufferedImage image;
+
+    private static final String RESOURCE_IMAGE_URL = "https://www.spigotmc.org/data/resource_icons/";
+    private static final String DEFAULT_RESOURCE_URL = "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
 
     /**
      * Constructs a Resource with the given parameters
@@ -37,6 +43,11 @@ public class Resource {
         this.version = version;
         this.authorData = authorData;
         this.stats = stats;
+        BufferedImage image1 = HttpRequester.requestImage(RESOURCE_IMAGE_URL + String.format("%d/%d.jpg", id / 1000, id));
+        if (image1 == null) {
+            image1 = HttpRequester.requestImage(DEFAULT_RESOURCE_URL);
+        }
+        image = image1;
     }
 
     /**
@@ -49,6 +60,7 @@ public class Resource {
     /**
      * @return resource title
      */
+    @NotNull
     public String getTitle() {
         return title;
     }
@@ -56,6 +68,7 @@ public class Resource {
     /**
      * @return resource tag
      */
+    @NotNull
     public String getTag() {
         return tag;
     }
@@ -63,6 +76,7 @@ public class Resource {
     /**
      * @return resource version
      */
+    @NotNull
     public String getVersion() {
         return version;
     }
@@ -70,6 +84,7 @@ public class Resource {
     /**
      * @return data about the author of the resource
      */
+    @NotNull
     public AuthorData getAuthorData() {
         return authorData;
     }
@@ -77,8 +92,17 @@ public class Resource {
     /**
      * @return resource stats
      */
+    @NotNull
     public Stats getStats() {
         return stats;
+    }
+
+    /**
+     * @return resource image
+     */
+    @NotNull
+    public BufferedImage getImage() {
+        return image;
     }
 
     @Override

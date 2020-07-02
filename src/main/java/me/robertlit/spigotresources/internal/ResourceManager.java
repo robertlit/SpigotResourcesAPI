@@ -21,7 +21,7 @@ public class ResourceManager {
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
         if (fetch || idToResourceMap.get(resourceId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                Resource resource = gson.fromJson(HttpRequester.request(GET_RESOURCE_URL+resourceId), Resource.class);
+                Resource resource = gson.fromJson(HttpRequester.requestString(GET_RESOURCE_URL+resourceId), Resource.class);
                 idToResourceMap.put(resourceId, resource);
                 return resource;
             });
@@ -33,7 +33,7 @@ public class ResourceManager {
         if (fetch || authorToResourcesMap.get(authorId) == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Type type = new TypeToken<Collection<Resource>>(){}.getType();
-                Collection<Resource> resources = gson.fromJson(HttpRequester.request(GET_RESOURCES_BY_AUTHOR_URL+authorId), type);
+                Collection<Resource> resources = gson.fromJson(HttpRequester.requestString(GET_RESOURCES_BY_AUTHOR_URL+authorId), type);
                 if (resources == null) {
                     return Collections.emptyList();
                 }

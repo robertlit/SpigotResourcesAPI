@@ -19,7 +19,7 @@ public class AuthorManager {
     public CompletableFuture<Author> getAuthor(int authorId, boolean fetch) {
         if (fetch || idToAuthorMap.get(authorId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                Author author = gson.fromJson(HttpRequester.request(GET_AUTHOR_URL+authorId), Author.class);
+                Author author = gson.fromJson(HttpRequester.requestString(GET_AUTHOR_URL+authorId), Author.class);
                 idToAuthorMap.put(authorId, author);
                 return author;
             });

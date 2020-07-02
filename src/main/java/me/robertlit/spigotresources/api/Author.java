@@ -2,9 +2,11 @@ package me.robertlit.spigotresources.api;
 
 import com.google.gson.annotations.JsonAdapter;
 import me.robertlit.spigotresources.internal.AuthorJsonAdapter;
+import me.robertlit.spigotresources.internal.HttpRequester;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
@@ -16,6 +18,10 @@ public class Author {
     private final String username;
     private final int resourceCount;
     private final Identities identities;
+    private final BufferedImage avatar;
+
+    private static final String AVATAR_URL = "https://www.spigotmc.org/data/avatars/l/";
+    private static final String DEFAULT_AVATAR_URL = "https://static.spigotmc.org/styles/spigot/xenforo/avatars/avatar_male_l.png";
 
     /**
      * Constructs an Author with the given parameters
@@ -32,6 +38,11 @@ public class Author {
         this.username = username;
         this.resourceCount = resourceCount;
         this.identities = identities;
+        BufferedImage image1 = HttpRequester.requestImage(AVATAR_URL + String.format("%d/%d.jpg", id / 1000, id));
+        if (image1 == null) {
+            image1 = HttpRequester.requestImage(DEFAULT_AVATAR_URL);
+        }
+        avatar = image1;
     }
 
     /**
@@ -68,6 +79,15 @@ public class Author {
         return identities;
     }
 
+    /**
+     * Gets this author's avatar
+     * @return author's avatar
+     */
+    @NotNull
+    public BufferedImage getAvatar() {
+        return avatar;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,7 +110,7 @@ public class Author {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", resourceCount=" + resourceCount +
-                ", identites=" + identities +
+                ", identities=" + identities +
                 '}';
     }
 
