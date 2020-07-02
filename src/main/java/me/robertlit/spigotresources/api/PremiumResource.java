@@ -15,7 +15,9 @@ public class PremiumResource extends Resource {
 
     /**
      * Constructs a PremiumResource with the given parameters
+     * <p>
      * This should only be used internally
+     * </p>
      * @param id resource id
      * @param title resource title
      * @param tag resource tag
@@ -74,7 +76,9 @@ public class PremiumResource extends Resource {
 
         /**
          * Constructs a PremiumResource with the given parameters
+         * <p>
          * This should only be used internally
+         * </p>
          * @param price resource price
          * @param currency currency of the price
          */

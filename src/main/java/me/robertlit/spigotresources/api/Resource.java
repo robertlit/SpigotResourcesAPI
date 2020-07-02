@@ -20,7 +20,9 @@ public class Resource {
 
     /**
      * Constructs a Resource with the given parameters
+     * <p>
      * This should only be used internally
+     * </p>
      * @param id resource id
      * @param title resource title
      * @param tag resource tag
@@ -118,7 +120,9 @@ public class Resource {
 
         /**
          * Constructs a Stats object with the given parameters
+         * <p>
          * This should only be used internally
+         * </p>
          * @param downloads amount of downloads
          * @param updates amount of updates
          * @param reviews amount of reviews
@@ -195,7 +199,9 @@ public class Resource {
 
         /**
          * Constructs an AuthorData object with the given parameters
+         * <p>
          * This should only be used internally
+         * </p>
          * @param id author id
          * @param username author username
          */

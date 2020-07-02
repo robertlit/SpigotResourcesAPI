@@ -19,7 +19,9 @@ public class Author {
 
     /**
      * Constructs an Author with the given parameters
+     * <p>
      * This should only be used internally
+     * </p>
      * @param id user id
      * @param username username
      * @param resourceCount amount of resources
@@ -100,7 +102,9 @@ public class Author {
 
         /**
          * Constructs an Identities object with the given parameters
+         * <p>
          * This should only be used internally
+         * </p>
          * @param discord discord identity
          * @param youtube youtube identity
          * @param aim aim identity

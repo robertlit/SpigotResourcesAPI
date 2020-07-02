@@ -48,6 +48,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludePackageNames>me.robertlit.spigotresources.internal</excludePackageNames>
+                </configuration>
             </plugin>
         </plugins>
     </build>
