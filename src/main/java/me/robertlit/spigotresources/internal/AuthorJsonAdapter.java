@@ -99,46 +99,50 @@ public class AuthorJsonAdapter extends TypeAdapter<Author> {
     private Author.Identities readIdentities(JsonReader in) throws IOException {
         String discord = null, youtube = null, aim = null, icq = null, msn = null, yahoo = null, skype = null, gtalk = null, facebook = null, twitter = null;
 
-        in.beginObject();
-        while (in.hasNext()) {
-            String name = in.nextName();
-            switch (name) {
-                case "discord":
-                    discord = in.nextString();
-                    break;
-                case "youtube":
-                    youtube = in.nextString();
-                    break;
-                case "aim":
-                    aim = in.nextString();
-                    break;
-                case "icq":
-                    icq = in.nextString();
-                    break;
-                case "msn":
-                    msn = in.nextString();
-                    break;
-                case "yahoo":
-                    yahoo = in.nextString();
-                    break;
-                case "skype":
-                    skype = in.nextString();
-                    break;
-                case "gtalk":
-                    gtalk = in.nextString();
-                    break;
-                case "facebook":
-                    facebook = in.nextString();
-                    break;
-                case "twitter":
-                    twitter = in.nextString();
-                    break;
-                default:
-                    in.skipValue();
-                    break;
+        try {
+            in.beginObject();
+            while (in.hasNext()) {
+                String name = in.nextName();
+                switch (name) {
+                    case "discord":
+                        discord = in.nextString();
+                        break;
+                    case "youtube":
+                        youtube = in.nextString();
+                        break;
+                    case "aim":
+                        aim = in.nextString();
+                        break;
+                    case "icq":
+                        icq = in.nextString();
+                        break;
+                    case "msn":
+                        msn = in.nextString();
+                        break;
+                    case "yahoo":
+                        yahoo = in.nextString();
+                        break;
+                    case "skype":
+                        skype = in.nextString();
+                        break;
+                    case "gtalk":
+                        gtalk = in.nextString();
+                        break;
+                    case "facebook":
+                        facebook = in.nextString();
+                        break;
+                    case "twitter":
+                        twitter = in.nextString();
+                        break;
+                    default:
+                        in.skipValue();
+                        break;
+                }
             }
+            in.endObject();
+        } catch (IllegalStateException ignored) {
+            in.skipValue(); // try-catch would not be needed if REST returned empty object instead of array
         }
-        in.endObject();
 
         return new Author.Identities(discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter);
     }
