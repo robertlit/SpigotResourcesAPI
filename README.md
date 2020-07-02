@@ -1,11 +1,15 @@
 # SpigotResourcesAPI
 a Java wrapper of the Spigot resources REST API ([XenforoResourceManagerAPI](https://github.com/SpigotMC/XenforoResourceManagerAPI))
 
+SpigotResourcesAPI aims to be simple, thread-safe and efficient.
+
 [![Release](https://jitpack.io/v/robertlit/SpigotResourcesAPI.svg)](https://jitpack.io/#robertlit/SpigotResourcesAPI)
 
-[Javadoc](https://jitpack.io/com/github/robertlit/SpigotResourcesAPI/1.0/javadoc/)
+[Javadoc](https://jitpack.io/com/github/robertlit/SpigotResourcesAPI/latest/javadoc/)
 
-SpigotResourcesAPI aims to be simple, thread-safe and efficient.
+[See on SpigotMC](https://www.spigotmc.org/threads/spigotresourcesapi-get-information-about-resources-and-authors.447967/)
+
+
 
 # How to use
 Currently, SpigotResourcesAPI is only available through JitPack.
@@ -13,35 +17,38 @@ In the future, it may be deployed to maven central, and will be deployed to GitH
 
 ## Maven
 Add JitPack as a repository
-```
-<!--   it is recommended to specify JitPack after all other repositories   -->
-<repository>
-	<id>jitpack.io</id>
-	<url>https://jitpack.io</url>
-</repository>
+``` xml
+<repositories>
+  <!--   it is recommended to specify JitPack after all other repositories   -->
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
 ```
 Add SpigotResourcesAPI as a dependency
-```
-<dependency>
-  <groupId>com.github.robertlit</groupId>
-  <artifactId>SpigotResourcesAPI</artifactId>
-  <version>1.0</version>
-</dependency>
+``` xml
+<dependencies>
+  <dependency>
+    <groupId>com.github.robertlit</groupId>
+    <artifactId>SpigotResourcesAPI</artifactId>
+    <version>1.0</version>
+  </dependency>
+</dependencies>
 ```
 
 ## Gradle
 Add JitPack as a repository
 ```
 repositories {
-	...
-	maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' }
 }
 ```
 Add SpigotResourcesAPI as a dependency
 ```
 dependencies {
-		implementation 'com.github.robertlit:SpigotResourcesAPI:1.0'
-	}
+    implementation 'com.github.robertlit:SpigotResourcesAPI:1.0'
+}
 ```
 
 # Code exmaples
