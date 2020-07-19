@@ -32,7 +32,7 @@ Add SpigotResourcesAPI as a dependency
   <dependency>
     <groupId>com.github.robertlit</groupId>
     <artifactId>SpigotResourcesAPI</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
   </dependency>
 </dependencies>
 ```
@@ -47,9 +47,12 @@ repositories {
 Add SpigotResourcesAPI as a dependency
 ```
 dependencies {
-    implementation 'com.github.robertlit:SpigotResourcesAPI:1.1'
+    implementation 'com.github.robertlit:SpigotResourcesAPI:1.1.1'
 }
 ```
+
+Or, clone the repository, install the artifact locally (using ```mvn install```, for example)
+and use the artifact information that is in the ```pom.xml``` file as a dependency.
 
 # Code exmaples
 ``` Java
