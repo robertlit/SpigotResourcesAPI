@@ -105,6 +105,26 @@ public class Resource {
         return image;
     }
 
+    /**
+     * @return whether this resource is a premium resource
+     */
+    public boolean isPremium() {
+        return (this instanceof PremiumResource);
+    }
+
+    /**
+     * Gets this resource as a Premium resource
+     * <p>
+     * Users should check whether this resource isPremium before using this method
+     * </p>
+     * @return this resource as a PremiumResource
+     * @throws ClassCastException if this resource is not premium
+     */
+    @NotNull
+    public PremiumResource getAsPremium() {
+        return ((PremiumResource) this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
