@@ -113,7 +113,7 @@ public class Resource {
     }
 
     /**
-     * Gets this resource as a Premium resource
+     * Gets this resource as a PremiumResource
      * <p>
      * Users should check whether this resource isPremium before using this method
      * </p>
