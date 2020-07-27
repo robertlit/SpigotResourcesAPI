@@ -32,7 +32,7 @@ Add SpigotResourcesAPI as a dependency
   <dependency>
     <groupId>com.github.robertlit</groupId>
     <artifactId>SpigotResourcesAPI</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
   </dependency>
 </dependencies>
 ```
@@ -47,7 +47,7 @@ repositories {
 Add SpigotResourcesAPI as a dependency
 ```
 dependencies {
-    implementation 'com.github.robertlit:SpigotResourcesAPI:1.1.2'
+    implementation 'com.github.robertlit:SpigotResourcesAPI:1.1.3'
 }
 ```
 
