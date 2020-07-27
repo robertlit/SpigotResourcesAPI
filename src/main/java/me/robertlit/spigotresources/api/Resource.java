@@ -21,8 +21,9 @@ public class Resource {
     protected final Stats stats;
     protected final BufferedImage image;
 
-    private static final String RESOURCE_IMAGE_URL = "https://www.spigotmc.org/data/resource_icons/";
-    private static final String DEFAULT_RESOURCE_URL = "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
+    private static final String RESOURCE_IMAGE_URL = "https://www.spigotmc.org/data/resource_icons/%d/%d.jpg";
+    private static final String DEFAULT_RESOURCE_IMAGE_URL = "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
+    private static final BufferedImage DEFAULT_IMAGE = HttpRequester.requestImage(DEFAULT_RESOURCE_IMAGE_URL);
 
     /**
      * Constructs a Resource with the given parameters
@@ -43,11 +44,11 @@ public class Resource {
         this.version = version;
         this.authorData = authorData;
         this.stats = stats;
-        BufferedImage image1 = HttpRequester.requestImage(RESOURCE_IMAGE_URL + String.format("%d/%d.jpg", id / 1000, id));
-        if (image1 == null) {
-            image1 = HttpRequester.requestImage(DEFAULT_RESOURCE_URL);
+        BufferedImage image = HttpRequester.requestImage(String.format(RESOURCE_IMAGE_URL, id / 1000, id));
+        if (image == null) {
+            image = DEFAULT_IMAGE;
         }
-        image = image1;
+        this.image = image;
     }
 
     /**

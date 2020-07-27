@@ -20,8 +20,9 @@ public class Author {
     private final Identities identities;
     private final BufferedImage avatar;
 
-    private static final String AVATAR_URL = "https://www.spigotmc.org/data/avatars/l/";
+    private static final String AVATAR_URL = "https://www.spigotmc.org/data/avatars/l/%d/%d.jpg";
     private static final String DEFAULT_AVATAR_URL = "https://static.spigotmc.org/styles/spigot/xenforo/avatars/avatar_male_l.png";
+    private static final BufferedImage DEFAULT_AVATAR = HttpRequester.requestImage(DEFAULT_AVATAR_URL);
 
     /**
      * Constructs an Author with the given parameters
@@ -38,11 +39,11 @@ public class Author {
         this.username = username;
         this.resourceCount = resourceCount;
         this.identities = identities;
-        BufferedImage image1 = HttpRequester.requestImage(AVATAR_URL + String.format("%d/%d.jpg", id / 1000, id));
-        if (image1 == null) {
-            image1 = HttpRequester.requestImage(DEFAULT_AVATAR_URL);
+        BufferedImage image = HttpRequester.requestImage(String.format(AVATAR_URL, id / 1000, id));
+        if (image == null) {
+            image = DEFAULT_AVATAR;
         }
-        avatar = image1;
+        this.avatar = image;
     }
 
     /**
