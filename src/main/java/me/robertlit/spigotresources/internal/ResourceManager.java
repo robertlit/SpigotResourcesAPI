@@ -10,8 +10,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class ResourceManager {
 
-    private static final String GET_RESOURCE_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=";
-    public static final String GET_RESOURCES_BY_AUTHOR_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResourcesByAuthor&id=";
+    private static final String GET_RESOURCE_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=%d";
+    public static final String GET_RESOURCES_BY_AUTHOR_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResourcesByAuthor&id=%d";
 
     private final Map<Integer, Resource> idToResourceMap = Collections.synchronizedMap(new HashMap<>());
     private final Map<Integer, Collection<Resource>> authorToResourcesMap = Collections.synchronizedMap(new HashMap<>());
@@ -21,7 +21,7 @@ public class ResourceManager {
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
         if (fetch || idToResourceMap.get(resourceId) == null) {
             return CompletableFuture.supplyAsync(() -> {
-                Resource resource = gson.fromJson(HttpRequester.requestString(GET_RESOURCE_URL+resourceId), Resource.class);
+                Resource resource = gson.fromJson(HttpRequester.requestString(String.format(GET_RESOURCE_URL, resourceId)), Resource.class);
                 idToResourceMap.put(resourceId, resource);
                 return resource;
             });
@@ -33,7 +33,7 @@ public class ResourceManager {
         if (fetch || authorToResourcesMap.get(authorId) == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Type type = new TypeToken<Collection<Resource>>(){}.getType();
-                Collection<Resource> resources = gson.fromJson(HttpRequester.requestString(GET_RESOURCES_BY_AUTHOR_URL+authorId), type);
+                Collection<Resource> resources = gson.fromJson(HttpRequester.requestString(String.format(GET_RESOURCES_BY_AUTHOR_URL, authorId)), type);
                 if (resources == null) {
                     return Collections.emptyList();
                 }
