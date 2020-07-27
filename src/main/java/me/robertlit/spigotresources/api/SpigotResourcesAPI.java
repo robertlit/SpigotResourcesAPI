@@ -32,7 +32,7 @@ public class SpigotResourcesAPI {
      * otherwise the data will be gotten from cache
      * </p>
      * @param resourceId resource id
-     * @return a future which is to be completed with the wanted Resource
+     * @return a future, which is to be completed with the wanted Resource or null
      */
     @NotNull
     public CompletableFuture<Resource> getResource(int resourceId) {
@@ -42,11 +42,11 @@ public class SpigotResourcesAPI {
     /**
      * Gets the Resource with the given id
      * <p>
-     * Note: If fetch is true but the data is not in cache, it will be fetched
+     * Note: If fetch is false but the data is not in cache, it will be fetched
      * </p>
      * @param resourceId resource id
      * @param fetch whether to fetch data or get from cache
-     * @return a future which is to be completed with the wanted Resource
+     * @return a future, which is to be completed with the wanted Resource or null
      */
     @NotNull
     public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
@@ -60,7 +60,7 @@ public class SpigotResourcesAPI {
      * otherwise the data will be gotten from cache
      * </p>
      * @param authorId id of the Author
-     * @return a future which is to be completed with an unmodifiable collection representing the resources of the given Author
+     * @return a future, which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
     @NotNull
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId) {
@@ -70,11 +70,11 @@ public class SpigotResourcesAPI {
     /**
      * Gets the Resources of a given Author
      * <p>
-     * Note: If fetch is true but the data is not in cache, it will be fetched
+     * Note: If fetch is false but the data is not in cache, it will be fetched
      * </p>
      * @param authorId id of the Author
      * @param fetch whether to fetch data or get from cache
-     * @return a future which is to be completed with an unmodifiable collection representing the resources of the given Author or null
+     * @return a future, which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
     @NotNull
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId, boolean fetch) {
@@ -88,7 +88,7 @@ public class SpigotResourcesAPI {
      * otherwise the data will be gotten from cache
      * </p>
      * @param authorId author id
-     * @return a future which is to be completed with the wanted Author or null
+     * @return a future, which is to be completed with the wanted Author or null
      */
     @NotNull
     public CompletableFuture<Author> getAuthor(int authorId) {
@@ -98,11 +98,11 @@ public class SpigotResourcesAPI {
     /**
      * Gets the Author with the given id
      * <p>
-     * Note: If fetch is true but the data is not in cache, it will be fetched
+     * Note: If fetch is false but the data is not in cache, it will be fetched
      * </p>
      * @param authorId author id
      * @param fetch whether to fetch data or get from cache
-     * @return a future which is to be completed with the wanted Author or null
+     * @return a future, which is to be completed with the wanted Author or null
      */
     @NotNull
     public CompletableFuture<Author> getAuthor(int authorId, boolean fetch) {
