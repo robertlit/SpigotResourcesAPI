@@ -12,7 +12,7 @@ public class HttpRequester {
     public static String requestString(String urlString) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(urlString).openConnection();
-            if (connection.getResponseCode() == 404) {
+            if (connection.getResponseCode() != 200) {
                 return null;
             }
             return new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
