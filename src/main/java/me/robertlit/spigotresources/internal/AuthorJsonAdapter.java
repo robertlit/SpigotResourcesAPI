@@ -56,6 +56,9 @@ public class AuthorJsonAdapter extends TypeAdapter<Author> {
         if (identities.getTwitter() != null) {
             out.name("twitter").value(identities.getTwitter());
         }
+        if (identities.getGithub() != null) {
+            out.name("github").value(identities.getGithub());
+        }
         out.endObject();
     }
 
@@ -97,7 +100,7 @@ public class AuthorJsonAdapter extends TypeAdapter<Author> {
     }
 
     private Author.Identities readIdentities(JsonReader in) throws IOException {
-        String discord = null, youtube = null, aim = null, icq = null, msn = null, yahoo = null, skype = null, gtalk = null, facebook = null, twitter = null;
+        String discord = null, youtube = null, aim = null, icq = null, msn = null, yahoo = null, skype = null, gtalk = null, facebook = null, twitter = null, github = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -133,6 +136,9 @@ public class AuthorJsonAdapter extends TypeAdapter<Author> {
                 case "twitter":
                     twitter = in.nextString();
                     break;
+                case "github":
+                    github = in.nextString();
+                    break;
                 default:
                     in.skipValue();
                     break;
@@ -140,6 +146,6 @@ public class AuthorJsonAdapter extends TypeAdapter<Author> {
         }
         in.endObject();
 
-        return new Author.Identities(discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter);
+        return new Author.Identities(discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter, github);
     }
 }

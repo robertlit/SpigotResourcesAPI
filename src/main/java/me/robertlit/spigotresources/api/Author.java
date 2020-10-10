@@ -119,7 +119,7 @@ public class Author {
      * Represents an Author's social media identities
      */
     public static class Identities {
-        private final String discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter;
+        private final String discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter, github;
 
         /**
          * Constructs an Identities object with the given parameters
@@ -136,8 +136,9 @@ public class Author {
          * @param gtalk google talk identity
          * @param facebook facebook identity
          * @param twitter twitter identity
+         * @param github github identity
          */
-        public Identities(@Nullable String discord, @Nullable String youtube, @Nullable String aim, @Nullable String icq, @Nullable String msn, @Nullable String yahoo, @Nullable String skype, @Nullable String gtalk, @Nullable String facebook, @Nullable String twitter) {
+        public Identities(@Nullable String discord, @Nullable String youtube, @Nullable String aim, @Nullable String icq, @Nullable String msn, @Nullable String yahoo, @Nullable String skype, @Nullable String gtalk, @Nullable String facebook, @Nullable String twitter,  @Nullable String github) {
             this.discord = discord;
             this.youtube = youtube;
             this.aim = aim;
@@ -148,6 +149,7 @@ public class Author {
             this.gtalk = gtalk;
             this.facebook = facebook;
             this.twitter = twitter;
+            this.github = github;
         }
 
         /**
@@ -228,6 +230,14 @@ public class Author {
         @Nullable
         public String getTwitter() {
             return twitter;
+        }
+
+        /**
+         * @return github identity
+         */
+        @Nullable
+        public String getGithub() {
+            return github;
         }
 
         @Override
