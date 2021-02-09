@@ -9,12 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SpigotResourcesAPITest {
 
-    SpigotResourcesAPI api = new SpigotResourcesAPI(false);
+    SpigotResourcesAPI api = new SpigotResourcesAPI(1, TimeUnit.HOURS);
 
     @Test
     void testAuthor() {
