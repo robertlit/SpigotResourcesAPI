@@ -28,10 +28,6 @@ public final class SpigotResourcesAPI {
 
     /**
      * Gets the Resource with the given id
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
      * @param resourceId resource id
      * @return a future, which is to be completed with the wanted Resource or null
      */
@@ -42,10 +38,6 @@ public final class SpigotResourcesAPI {
 
     /**
      * Gets the Resources of a given Author
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
      * @param authorId id of the Author
      * @return a future, which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
@@ -56,10 +48,6 @@ public final class SpigotResourcesAPI {
 
     /**
      * Gets the Author with the given id
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
      * @param authorId author id
      * @return a future, which is to be completed with the wanted Author or null
      */

@@ -16,25 +16,30 @@ public class AuthorManager {
     private static final String GET_AUTHOR_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getAuthor&id=%d";
 
     private final Gson gson = new Gson();
-    private final LoadingCache<Integer, CompletableFuture<Author>> authorCache;
+    private final LoadingCache<Integer, Author> authorCache;
 
     public AuthorManager(long duration, TimeUnit unit) {
         this.authorCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(duration, unit)
-                .build(new CacheLoader<Integer, CompletableFuture<Author>>() {
+                .build(new CacheLoader<Integer, Author>() {
                     @Override
-                    public CompletableFuture<Author> load(@NotNull Integer authorId) {
-                        return CompletableFuture.supplyAsync(() -> gson.fromJson(HttpRequester.requestString(String.format(GET_AUTHOR_URL, authorId)), Author.class));
+                    public Author load(@NotNull Integer authorId) throws Exception {
+                        Author author = gson.fromJson(HttpRequester.requestString(String.format(GET_AUTHOR_URL, authorId)), Author.class);
+                        if (author == null) {
+                            throw new Exception();
+                        }
+                        return author;
                     }
                 });
     }
 
     public CompletableFuture<Author> getAuthor(int authorId) {
-        try {
-            return authorCache.get(authorId);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return CompletableFuture.completedFuture(null);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return authorCache.get(authorId);
+            } catch (ExecutionException e) {
+                return null;
+            }
+        });
     }
 }

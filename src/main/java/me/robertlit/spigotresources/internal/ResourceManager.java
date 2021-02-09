@@ -21,50 +21,54 @@ public class ResourceManager {
     private static final String GET_RESOURCES_BY_AUTHOR_URL = "https://api.spigotmc.org/simple/0.1/index.php?action=getResourcesByAuthor&id=%d";
 
     private final Gson gson = new Gson();
-    private final LoadingCache<Integer, CompletableFuture<Resource>> resourceCache;
-    private final LoadingCache<Integer, CompletableFuture<Collection<Resource>>> authorResourcesCache;
+    private final LoadingCache<Integer, Resource> resourceCache;
+    private final LoadingCache<Integer, Collection<Resource>> authorResourcesCache;
 
     public ResourceManager(long duration, TimeUnit unit) {
         this.resourceCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(duration, unit)
-                .build(new CacheLoader<Integer, CompletableFuture<Resource>>() {
+                .build(new CacheLoader<Integer, Resource>() {
                     @Override
-                    public CompletableFuture<Resource> load(@NotNull Integer resourceId) {
-                        return CompletableFuture.supplyAsync(() -> gson.fromJson(HttpRequester.requestString(String.format(GET_RESOURCE_URL, resourceId)), Resource.class));
+                    public Resource load(@NotNull Integer resourceId) throws Exception {
+                        Resource resource = gson.fromJson(HttpRequester.requestString(String.format(GET_RESOURCE_URL, resourceId)), Resource.class);
+                        if (resource == null) {
+                            throw new Exception();
+                        }
+                        return resource;
                     }
                 });
         this.authorResourcesCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(duration, unit)
-                .build(new CacheLoader<Integer, CompletableFuture<Collection<Resource>>>() {
+                .build(new CacheLoader<Integer, Collection<Resource>>() {
                     @Override
-                    public CompletableFuture<Collection<Resource>> load(@NotNull Integer authorId) {
-                        return CompletableFuture.supplyAsync(() -> {
+                    public Collection<Resource> load(@NotNull Integer authorId) {
                             Type type = new TypeToken<Collection<Resource>>(){}.getType();
                             Collection<Resource> resources = gson.fromJson(HttpRequester.requestString(String.format(GET_RESOURCES_BY_AUTHOR_URL, authorId)), type);
                             if (resources == null) {
                                 return Collections.emptyList();
                             }
                             return Collections.unmodifiableCollection(resources);
-                        });
-                    }
+                        }
                 });
     }
 
     public CompletableFuture<Resource> getResource(int resourceId) {
-        try {
-            return resourceCache.get(resourceId);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return CompletableFuture.completedFuture(null);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return resourceCache.get(resourceId);
+            } catch (ExecutionException e) {
+                return null;
+            }
+        });
     }
 
     public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId) {
-        try {
-            return authorResourcesCache.get(authorId);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return CompletableFuture.completedFuture(Collections.emptyList());
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return authorResourcesCache.get(authorId);
+            } catch (ExecutionException e) {
+                return Collections.emptyList();
+            }
+        });
     }
 }
