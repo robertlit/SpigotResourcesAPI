@@ -56,7 +56,8 @@ and use the artifact information that is in the ```pom.xml``` file as a dependen
 
 # Code exmaples
 ``` Java
-SpigotResourcesAPI api = new SpigotResourcesAPI(false);
+// Construct an API and specify how long should data be cached for
+SpigotResourcesAPI api = new SpigotResourcesAPI(1, TimeUnit.HOURS);
 
 // Get Author by id
 CompletableFuture<Author> future = api.getAuthor(740512);

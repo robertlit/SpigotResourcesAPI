@@ -3,109 +3,56 @@ package me.robertlit.spigotresources.api;
 import me.robertlit.spigotresources.internal.AuthorManager;
 import me.robertlit.spigotresources.internal.ResourceManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The main class of SpigotResourcesAPI
  */
-public class SpigotResourcesAPI {
+public final class SpigotResourcesAPI {
 
-    private final boolean fetchByDefault;
-
+    private final ResourceManager resourceManager;
+    private final AuthorManager authorManager;
     /**
      * Constructs an API
-     * @param fetchByDefault whether to fetch data or retrieve it from cache by default
+     * @param cacheDuration the duration for which data is cached
+     * @param cacheUnit the time unit for the duration
      */
-    public SpigotResourcesAPI(boolean fetchByDefault) {
-        this.fetchByDefault = fetchByDefault;
-    }
-
-    private final ResourceManager resourceManager = new ResourceManager();
-    private final AuthorManager authorManager = new AuthorManager();
-
-    /**
-     * Gets the Resource with the given id
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
-     * @param resourceId resource id
-     * @return a future, which is to be completed with the wanted Resource or null
-     */
-    @NotNull
-    public CompletableFuture<Resource> getResource(int resourceId) {
-        return getResource(resourceId, fetchByDefault);
+    public SpigotResourcesAPI(long cacheDuration, TimeUnit cacheUnit) {
+        this.resourceManager = new ResourceManager(cacheDuration, cacheUnit);
+        this.authorManager = new AuthorManager(cacheDuration, cacheUnit);
     }
 
     /**
      * Gets the Resource with the given id
-     * <p>
-     * Note: If fetch is false but the data is not in cache, it will be fetched
-     * </p>
      * @param resourceId resource id
-     * @param fetch whether to fetch data or get from cache
      * @return a future, which is to be completed with the wanted Resource or null
      */
     @NotNull
-    public CompletableFuture<Resource> getResource(int resourceId, boolean fetch) {
-        return resourceManager.getResource(resourceId, fetch);
+    public CompletableFuture<@Nullable Resource> getResource(int resourceId) {
+        return resourceManager.getResource(resourceId);
     }
 
     /**
      * Gets the Resources of a given Author
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
      * @param authorId id of the Author
      * @return a future, which is to be completed with an unmodifiable collection representing the resources of the given Author
      */
     @NotNull
-    public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId) {
-        return getResourcesByAuthor(authorId, fetchByDefault);
-    }
-
-    /**
-     * Gets the Resources of a given Author
-     * <p>
-     * Note: If fetch is false but the data is not in cache, it will be fetched
-     * </p>
-     * @param authorId id of the Author
-     * @param fetch whether to fetch data or get from cache
-     * @return a future, which is to be completed with an unmodifiable collection representing the resources of the given Author
-     */
-    @NotNull
-    public CompletableFuture<Collection<Resource>> getResourcesByAuthor(int authorId, boolean fetch) {
-        return resourceManager.getResourcesByAuthor(authorId, fetch);
+    public CompletableFuture<@NotNull Collection<Resource>> getResourcesByAuthor(int authorId) {
+        return resourceManager.getResourcesByAuthor(authorId);
     }
 
     /**
      * Gets the Author with the given id
-     * <p>
-     * If this API is set to fetch by default or if the data is not in cache, the data will be fetched,
-     * otherwise the data will be gotten from cache
-     * </p>
      * @param authorId author id
      * @return a future, which is to be completed with the wanted Author or null
      */
     @NotNull
-    public CompletableFuture<Author> getAuthor(int authorId) {
-        return getAuthor(authorId, fetchByDefault);
-    }
-
-    /**
-     * Gets the Author with the given id
-     * <p>
-     * Note: If fetch is false but the data is not in cache, it will be fetched
-     * </p>
-     * @param authorId author id
-     * @param fetch whether to fetch data or get from cache
-     * @return a future, which is to be completed with the wanted Author or null
-     */
-    @NotNull
-    public CompletableFuture<Author> getAuthor(int authorId, boolean fetch) {
-        return authorManager.getAuthor(authorId, fetch);
+    public CompletableFuture<@Nullable Author> getAuthor(int authorId) {
+        return authorManager.getAuthor(authorId);
     }
 }
