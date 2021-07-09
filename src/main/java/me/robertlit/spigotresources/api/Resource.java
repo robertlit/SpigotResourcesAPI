@@ -1,91 +1,88 @@
 package me.robertlit.spigotresources.api;
 
-import com.google.gson.annotations.JsonAdapter;
-import me.robertlit.spigotresources.internal.HttpRequester;
-import me.robertlit.spigotresources.internal.ResourceJsonAdapter;
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.annotations.SerializedName;
 
-import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * Represents a resource
  */
-@JsonAdapter(ResourceJsonAdapter.class)
 public class Resource {
-    protected final int id;
-    protected final String title;
-    protected final String tag;
-    protected final String version;
-    protected final AuthorData authorData;
-    protected final Stats stats;
-    protected final BufferedImage image;
 
-    private static final String RESOURCE_IMAGE_URL = "https://www.spigotmc.org/data/resource_icons/%d/%d.jpg";
-    private static final String DEFAULT_RESOURCE_IMAGE_URL = "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
-    private static final BufferedImage DEFAULT_IMAGE = HttpRequester.requestImage(DEFAULT_RESOURCE_IMAGE_URL);
+    private final int id;
+    private final String title;
+    private final String tag;
+    @SerializedName("current_version")
+    private final String version;
+    @SerializedName("native_minecraft_version")
+    private final String nativeMinecraftVersion;
+    @SerializedName("supported_minecraft_versions")
+    private final String[] supportedMinecraftVersions;
+    @SerializedName("author")
+    private final AuthorData authorData;
+    private final Stats stats;
+    @SerializedName("premium")
+    private final PremiumData premiumData;
+    @SerializedName("icon_link")
+    private final String iconLink;
+    private final String description;
 
-    /**
-     * Constructs a Resource with the given parameters
-     * <p>
-     * This should only be used internally
-     * </p>
-     * @param id resource id
-     * @param title resource title
-     * @param tag resource tag
-     * @param version resource version
-     * @param authorData data about the author of the resource
-     * @param stats resource stats
-     */
-    public Resource(int id, @NotNull String title, @NotNull String tag, @NotNull String version, @NotNull AuthorData authorData, @NotNull Stats stats) {
+    private Resource(int id,
+                     String title,
+                     String tag,
+                     String version,
+                     String nativeMinecraftVersion,
+                     String[] supportedMinecraftVersions,
+                     AuthorData authorData,
+                     Stats stats,
+                     PremiumData premiumData,
+                     String iconLink,
+                     String description) {
         this.id = id;
         this.title = title;
         this.tag = tag;
         this.version = version;
+        this.nativeMinecraftVersion = nativeMinecraftVersion;
+        this.supportedMinecraftVersions = supportedMinecraftVersions;
         this.authorData = authorData;
         this.stats = stats;
-        BufferedImage image = HttpRequester.requestImage(String.format(RESOURCE_IMAGE_URL, id / 1000, id));
-        if (image == null) {
-            image = DEFAULT_IMAGE;
-        }
-        this.image = image;
+        this.premiumData = premiumData;
+        this.iconLink = iconLink;
+        this.description = description;
     }
 
-    /**
-     * @return resource id
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * @return resource title
-     */
-    @NotNull
+
     public String getTitle() {
         return title;
     }
 
-    /**
-     * @return resource tag
-     */
-    @NotNull
+
     public String getTag() {
         return tag;
     }
 
-    /**
-     * @return resource version
-     */
-    @NotNull
+
     public String getVersion() {
         return version;
+    }
+
+    public String getNativeMinecraftVersion() {
+        return nativeMinecraftVersion;
+    }
+
+    public String[] getSupportedMinecraftVersions() {
+        return supportedMinecraftVersions;
     }
 
     /**
      * @return data about the author of the resource
      */
-    @NotNull
+
     public AuthorData getAuthorData() {
         return authorData;
     }
@@ -93,37 +90,21 @@ public class Resource {
     /**
      * @return resource stats
      */
-    @NotNull
+
     public Stats getStats() {
         return stats;
     }
 
-    /**
-     * @return resource image
-     */
-    @NotNull
-    public BufferedImage getImage() {
-        return image;
+    public PremiumData getPremiumData() {
+        return premiumData;
     }
 
-    /**
-     * @return whether this resource is a premium resource
-     */
-    public boolean isPremium() {
-        return (this instanceof PremiumResource);
+    public String getIconLink() {
+        return iconLink;
     }
 
-    /**
-     * Gets this resource as a PremiumResource
-     * <p>
-     * Users should check whether this resource isPremium before using this method
-     * </p>
-     * @return this resource as a PremiumResource
-     * @throws ClassCastException if this resource is not premium
-     */
-    @NotNull
-    public PremiumResource getAsPremium() {
-        return ((PremiumResource) this);
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -131,17 +112,24 @@ public class Resource {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resource resource = (Resource) o;
-        return id == resource.id &&
-                title.equals(resource.title) &&
-                tag.equals(resource.tag) &&
-                version.equals(resource.version) &&
-                authorData.equals(resource.authorData) &&
-                stats.equals(resource.stats);
+        return id == resource.id
+                && title.equals(resource.title)
+                && tag.equals(resource.tag)
+                && version.equals(resource.version)
+                && Objects.equals(nativeMinecraftVersion, resource.nativeMinecraftVersion)
+                && Arrays.equals(supportedMinecraftVersions, resource.supportedMinecraftVersions)
+                && authorData.equals(resource.authorData)
+                && stats.equals(resource.stats)
+                && premiumData.equals(resource.premiumData)
+                && iconLink.equals(resource.iconLink)
+                && description.equals(resource.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, tag, version, authorData, stats);
+        int result = Objects.hash(id, title, tag, version, nativeMinecraftVersion, authorData, stats, premiumData, iconLink, description);
+        result = 31 * result + Arrays.hashCode(supportedMinecraftVersions);
+        return result;
     }
 
     @Override
@@ -151,8 +139,13 @@ public class Resource {
                 ", title='" + title + '\'' +
                 ", tag='" + tag + '\'' +
                 ", version='" + version + '\'' +
+                ", nativeMinecraftVersion='" + nativeMinecraftVersion + '\'' +
+                ", supportedMinecraftVersions=" + Arrays.toString(supportedMinecraftVersions) +
                 ", authorData=" + authorData +
                 ", stats=" + stats +
+                ", premiumData=" + premiumData +
+                ", iconLink='" + iconLink + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -160,7 +153,8 @@ public class Resource {
      * Represents stats of a Resource
      */
     public static class Stats {
-        private final int downloads, updates, reviews;
+        private final int downloads, updates;
+        private final Reviews reviews;
         private final double rating;
 
         /**
@@ -168,12 +162,13 @@ public class Resource {
          * <p>
          * This should only be used internally
          * </p>
+         *
          * @param downloads amount of downloads
-         * @param updates amount of updates
-         * @param reviews amount of reviews
-         * @param rating rating (1-5)
+         * @param updates   amount of updates
+         * @param reviews   reviews
+         * @param rating    rating (1-5)
          */
-        public Stats(int downloads, int updates, int reviews, double rating) {
+        public Stats(int downloads, int updates, Reviews reviews, double rating) {
             this.downloads = downloads;
             this.updates = updates;
             this.reviews = reviews;
@@ -187,17 +182,11 @@ public class Resource {
             return downloads;
         }
 
-        /**
-         * @return amount of updates
-         */
         public int getUpdates() {
             return updates;
         }
 
-        /**
-         * @return amount of reviews
-         */
-        public int getReviews() {
+        public Reviews getReviews() {
             return reviews;
         }
 
@@ -213,10 +202,7 @@ public class Resource {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Stats stats = (Stats) o;
-            return downloads == stats.downloads &&
-                    updates == stats.updates &&
-                    reviews == stats.reviews &&
-                    Double.compare(stats.rating, rating) == 0;
+            return downloads == stats.downloads && updates == stats.updates && Double.compare(stats.rating, rating) == 0 && reviews.equals(stats.reviews);
         }
 
         @Override
@@ -233,6 +219,46 @@ public class Resource {
                     ", rating=" + rating +
                     '}';
         }
+
+        public static class Reviews {
+
+            private final int unique;
+            private final int total;
+
+            public Reviews(int unique, int total) {
+                this.unique = unique;
+                this.total = total;
+            }
+
+            public int getUnique() {
+                return unique;
+            }
+
+            public int getTotal() {
+                return total;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+                Reviews reviews = (Reviews) o;
+                return unique == reviews.unique && total == reviews.total;
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(unique, total);
+            }
+
+            @Override
+            public String toString() {
+                return "Reviews{" +
+                        "unique=" + unique +
+                        ", total=" + total +
+                        '}';
+            }
+        }
     }
 
     /**
@@ -247,10 +273,11 @@ public class Resource {
          * <p>
          * This should only be used internally
          * </p>
-         * @param id author id
+         *
+         * @param id       author id
          * @param username author username
          */
-        public AuthorData(int id, @NotNull String username) {
+        public AuthorData(int id, String username) {
             this.id = id;
             this.username = username;
         }
@@ -265,7 +292,7 @@ public class Resource {
         /**
          * @return author username
          */
-        @NotNull
+
         public String getUsername() {
             return username;
         }
@@ -289,6 +316,65 @@ public class Resource {
             return "AuthorData{" +
                     "id=" + id +
                     ", username='" + username + '\'' +
+                    '}';
+        }
+    }
+
+    /**
+     * A class holding data about a PremiumResource
+     */
+    public static class PremiumData {
+        private final double price;
+        private final String currency;
+
+        /**
+         * Constructs a PremiumResource with the given parameters
+         * <p>
+         * This should only be used internally
+         * </p>
+         *
+         * @param price    resource price
+         * @param currency currency of the price
+         */
+        public PremiumData(double price, String currency) {
+            this.price = price;
+            this.currency = currency;
+        }
+
+        /**
+         * @return the price of a PremiumResource
+         */
+        public double getPrice() {
+            return price;
+        }
+
+        /**
+         * @return the currency of the price
+         */
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PremiumData that = (PremiumData) o;
+            return Double.compare(that.price, price) == 0 &&
+                    currency.equals(that.currency);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(price, currency);
+        }
+
+        @Override
+        public String toString() {
+            return "PremiumData{" +
+                    "price=" + price +
+                    ", currency='" + currency + '\'' +
                     '}';
         }
     }

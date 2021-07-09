@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +15,62 @@ class SpigotResourcesAPITest {
     SpigotResourcesAPI api = new SpigotResourcesAPI(1, TimeUnit.HOURS);
 
     @Test
+    void exceedingPage() {
+        CompletableFuture<Collection<ResourceUpdate>> future = api.getResourceUpdates(72343, 4);
+        while (!future.isDone()) {}
+        Collection<ResourceUpdate> updates = future.getNow(null);
+        System.out.println(updates);
+    }
+
+    @Test
+    void listResources() {
+        CompletableFuture< Collection<Resource>> future = api.listResources(28, 1);
+        while (!future.isDone()) {}
+        Collection<Resource> resources = future.getNow(null);
+        System.out.println(resources);
+    }
+
+    @Test
+    void listCategories() {
+        CompletableFuture< Collection<Category>> future = api.listResourceCategories();
+        while (!future.isDone()) {}
+        Collection<Category> resources = future.getNow(null);
+        System.out.println(resources);
+    }
+
+    @Test
+    void getResourceUpdate() {
+        CompletableFuture<ResourceUpdate> future = api.getResourceUpdate(408982);
+        while (!future.isDone()) {}
+        ResourceUpdate update = future.getNow(null);
+        System.out.println(update);
+    }
+
+    @Test
+    void getResourceUpdates() {
+        CompletableFuture< Collection<ResourceUpdate>> future = api.getResourceUpdates(2, 1);
+        while (!future.isDone()) {}
+        Collection<ResourceUpdate> resources = future.getNow(null);
+        System.out.println(resources);
+    }
+
+    @Test
+    void testFindAuthor() {
+        CompletableFuture<Author> future = api.findAuthor("robertlit");
+        while (!future.isDone()) {}
+        Author author = future.getNow(null);
+        System.out.println(author);
+        Gson gson = new Gson();
+        String json = gson.toJson(author);
+        System.out.println(json);
+        Author author1 = gson.fromJson(json, Author.class);
+        System.out.println(author1);
+        assertEquals(author, author1);
+    }
+
+    @Test
     void testAuthor() {
-        CompletableFuture<Author> future = api.getAuthor(740512);
+        CompletableFuture<Author> future = api.getAuthor(1);
         while (!future.isDone()) {}
         Author author = future.getNow(null);
         System.out.println(author);
@@ -132,53 +183,53 @@ class SpigotResourcesAPITest {
         assertEquals(0, resources1.size());
     }
 
-    @Test
-    void testPrintResouceImage() throws IOException {
-        CompletableFuture<Resource> future = api.getResource(71792);
-        while (!future.isDone()) {}
-        Resource resource = future.getNow(null);
-        File file = new File("\\tests\\image.jpg");
-        System.out.println(file.getAbsolutePath());
-        file.getParentFile().mkdir();
-        file.createNewFile();
-        ImageIO.write(resource.getImage(), "jpg", file);
-    }
+//    @Test
+//    void testPrintResouceImage() throws IOException {
+//        CompletableFuture<Resource> future = api.getResource(71792);
+//        while (!future.isDone()) {}
+//        Resource resource = future.getNow(null);
+//        File file = new File("\\tests\\image.jpg");
+//        System.out.println(file.getAbsolutePath());
+//        file.getParentFile().mkdir();
+//        file.createNewFile();
+//        ImageIO.write(resource.getImage(), "jpg", file);
+//    }
+//
+//    @Test
+//    void testPrintResouceMissingImage() throws IOException {
+//        CompletableFuture<Resource> future = api.getResource(72343);
+//        while (!future.isDone()) {}
+//        Resource resource = future.getNow(null);
+//        File file = new File("\\tests\\missing.png");
+//        System.out.println(file.getAbsolutePath());
+//        file.getParentFile().mkdir();
+//        file.createNewFile();
+//        ImageIO.write(resource.getImage(), "png", file);
+//    }
 
-    @Test
-    void testPrintResouceMissingImage() throws IOException {
-        CompletableFuture<Resource> future = api.getResource(72343);
-        while (!future.isDone()) {}
-        Resource resource = future.getNow(null);
-        File file = new File("\\tests\\missing.png");
-        System.out.println(file.getAbsolutePath());
-        file.getParentFile().mkdir();
-        file.createNewFile();
-        ImageIO.write(resource.getImage(), "png", file);
-    }
-
-    @Test
-    void testAuthorMissingAvatar() throws IOException {
-        CompletableFuture<Author> future = api.getAuthor(740512);
-        while (!future.isDone()) {}
-        Author author = future.getNow(null);
-        File file = new File("\\tests\\missing_avatar.png");
-        System.out.println(file.getAbsolutePath());
-        file.getParentFile().mkdir();
-        file.createNewFile();
-        ImageIO.write(author.getAvatar(), "png", file);
-    }
-
-    @Test
-    void testAuthorAvatar() throws IOException {
-        CompletableFuture<Author> future = api.getAuthor(41621);
-        while (!future.isDone()) {}
-        Author author = future.getNow(null);
-        File file = new File("\\tests\\avatar.png");
-        System.out.println(file.getAbsolutePath());
-        file.getParentFile().mkdir();
-        file.createNewFile();
-        ImageIO.write(author.getAvatar(), "png", file);
-    }
+//    @Test
+//    void testAuthorMissingAvatar() throws IOException {
+//        CompletableFuture<Author> future = api.getAuthor(740512);
+//        while (!future.isDone()) {}
+//        Author author = future.getNow(null);
+//        File file = new File("\\tests\\missing_avatar.png");
+//        System.out.println(file.getAbsolutePath());
+//        file.getParentFile().mkdir();
+//        file.createNewFile();
+//        ImageIO.write(author.getAvatar(), "png", file);
+//    }
+//
+//    @Test
+//    void testAuthorAvatar() throws IOException {
+//        CompletableFuture<Author> future = api.getAuthor(41621);
+//        while (!future.isDone()) {}
+//        Author author = future.getNow(null);
+//        File file = new File("\\tests\\avatar.png");
+//        System.out.println(file.getAbsolutePath());
+//        file.getParentFile().mkdir();
+//        file.createNewFile();
+//        ImageIO.write(author.getAvatar(), "png", file);
+//    }
 
     @Test
     void testNoIdentities() {

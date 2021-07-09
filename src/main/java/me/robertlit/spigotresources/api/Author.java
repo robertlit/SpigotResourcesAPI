@@ -1,53 +1,45 @@
 package me.robertlit.spigotresources.api;
 
-import com.google.gson.annotations.JsonAdapter;
-import me.robertlit.spigotresources.internal.AuthorJsonAdapter;
-import me.robertlit.spigotresources.internal.HttpRequester;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.google.gson.annotations.SerializedName;
 
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
  * Represents a resource author
  */
-@JsonAdapter(AuthorJsonAdapter.class)
 public class Author {
+
     private final int id;
     private final String username;
+    @SerializedName("resource_count")
     private final int resourceCount;
     private final Identities identities;
-    private final BufferedImage avatar;
-
-    private static final String AVATAR_URL = "https://www.spigotmc.org/data/avatars/l/%d/%d.jpg";
-    private static final String DEFAULT_AVATAR_URL = "https://static.spigotmc.org/styles/spigot/xenforo/avatars/avatar_male_l.png";
-    private static final BufferedImage DEFAULT_AVATAR = HttpRequester.requestImage(DEFAULT_AVATAR_URL);
+    @SerializedName("avatar")
+    private final String avatarLink;
 
     /**
      * Constructs an Author with the given parameters
      * <p>
      * This should only be used internally
      * </p>
-     * @param id user id
-     * @param username username
+     *
+     * @param id            user id
+     * @param username      username
      * @param resourceCount amount of resources
-     * @param identities social media identities
+     * @param identities    social media identities
+     * @param avatarLink    link to avatar
      */
-    public Author(int id, @NotNull String username, int resourceCount, @NotNull Identities identities) {
+    private Author(int id, String username, int resourceCount, Identities identities, String avatarLink) {
         this.id = id;
         this.username = username;
         this.resourceCount = resourceCount;
         this.identities = identities;
-        BufferedImage image = HttpRequester.requestImage(String.format(AVATAR_URL, id / 1000, id));
-        if (image == null) {
-            image = DEFAULT_AVATAR;
-        }
-        this.avatar = image;
+        this.avatarLink = avatarLink;
     }
 
     /**
      * Gets this author's id
+     *
      * @return id
      */
     public int getId() {
@@ -56,15 +48,17 @@ public class Author {
 
     /**
      * Gets this author's username
+     *
      * @return username
      */
-    @NotNull
+
     public String getUsername() {
         return username;
     }
 
     /**
      * Gets the amount of resources this author has published
+     *
      * @return amount of resources this author has published
      */
     public int getResourceCount() {
@@ -73,20 +67,16 @@ public class Author {
 
     /**
      * Gets this author's social media identities
+     *
      * @return social media identities
      */
-    @NotNull
+
     public Identities getIdentities() {
         return identities;
     }
 
-    /**
-     * Gets this author's avatar
-     * @return author's avatar
-     */
-    @NotNull
-    public BufferedImage getAvatar() {
-        return avatar;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
     @Override
@@ -94,15 +84,12 @@ public class Author {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Author author = (Author) o;
-        return id == author.id &&
-                resourceCount == author.resourceCount &&
-                username.equals(author.username) &&
-                identities.equals(author.identities);
+        return id == author.id && resourceCount == author.resourceCount && username.equals(author.username) && identities.equals(author.identities) && avatarLink.equals(author.avatarLink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, resourceCount, identities);
+        return Objects.hash(id, username, resourceCount, identities, avatarLink);
     }
 
     @Override
@@ -112,6 +99,7 @@ public class Author {
                 ", username='" + username + '\'' +
                 ", resourceCount=" + resourceCount +
                 ", identities=" + identities +
+                ", avatarLink='" + avatarLink + '\'' +
                 '}';
     }
 
@@ -119,6 +107,7 @@ public class Author {
      * Represents an Author's social media identities
      */
     public static class Identities {
+
         private final String discord, youtube, aim, icq, msn, yahoo, skype, gtalk, facebook, twitter, github;
 
         /**
@@ -126,19 +115,20 @@ public class Author {
          * <p>
          * This should only be used internally
          * </p>
-         * @param discord discord identity
-         * @param youtube youtube identity
-         * @param aim aim identity
-         * @param icq icq identity
-         * @param msn msn identity
-         * @param yahoo yahoo identity
-         * @param skype skype identity
-         * @param gtalk google talk identity
+         *
+         * @param discord  discord identity
+         * @param youtube  youtube identity
+         * @param aim      aim identity
+         * @param icq      icq identity
+         * @param msn      msn identity
+         * @param yahoo    yahoo identity
+         * @param skype    skype identity
+         * @param gtalk    google talk identity
          * @param facebook facebook identity
-         * @param twitter twitter identity
-         * @param github github identity
+         * @param twitter  twitter identity
+         * @param github   github identity
          */
-        public Identities(@Nullable String discord, @Nullable String youtube, @Nullable String aim, @Nullable String icq, @Nullable String msn, @Nullable String yahoo, @Nullable String skype, @Nullable String gtalk, @Nullable String facebook, @Nullable String twitter,  @Nullable String github) {
+        public Identities(String discord, String youtube, String aim, String icq, String msn, String yahoo, String skype, String gtalk, String facebook, String twitter, String github) {
             this.discord = discord;
             this.youtube = youtube;
             this.aim = aim;
@@ -155,7 +145,7 @@ public class Author {
         /**
          * @return discord identity
          */
-        @Nullable
+
         public String getDiscord() {
             return discord;
         }
@@ -163,7 +153,7 @@ public class Author {
         /**
          * @return youtube identity
          */
-        @Nullable
+
         public String getYoutube() {
             return youtube;
         }
@@ -171,7 +161,7 @@ public class Author {
         /**
          * @return AIM identity
          */
-        @Nullable
+
         public String getAim() {
             return aim;
         }
@@ -179,7 +169,7 @@ public class Author {
         /**
          * @return ICQ identity
          */
-        @Nullable
+
         public String getIcq() {
             return icq;
         }
@@ -187,7 +177,7 @@ public class Author {
         /**
          * @return MSN identity
          */
-        @Nullable
+
         public String getMsn() {
             return msn;
         }
@@ -195,7 +185,7 @@ public class Author {
         /**
          * @return yahoo identity
          */
-        @Nullable
+
         public String getYahoo() {
             return yahoo;
         }
@@ -203,7 +193,7 @@ public class Author {
         /**
          * @return skype identity
          */
-        @Nullable
+
         public String getSkype() {
             return skype;
         }
@@ -211,7 +201,7 @@ public class Author {
         /**
          * @return google talk identity
          */
-        @Nullable
+
         public String getGoogleTalk() {
             return gtalk;
         }
@@ -219,7 +209,7 @@ public class Author {
         /**
          * @return facebook identity
          */
-        @Nullable
+
         public String getFacebook() {
             return facebook;
         }
@@ -227,7 +217,7 @@ public class Author {
         /**
          * @return twitter identity
          */
-        @Nullable
+
         public String getTwitter() {
             return twitter;
         }
@@ -235,7 +225,7 @@ public class Author {
         /**
          * @return github identity
          */
-        @Nullable
+
         public String getGithub() {
             return github;
         }
