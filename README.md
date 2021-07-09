@@ -12,8 +12,9 @@ SpigotResourcesAPI aims to be simple, thread-safe and efficient.
 
 
 # How to use
-Currently, SpigotResourcesAPI is only available through JitPack.
-In the future, it may be deployed to maven central, and will be deployed to GitHub Packages if authentication will not be required.
+Clone the repository, install the artifact locally (using ```mvn install```, for example)
+and use the artifact information that is in the ```pom.xml``` file as a dependency.
+Alternatively, you can use JitPack:
 
 ## Maven
 Add JitPack as a repository
@@ -32,7 +33,7 @@ Add SpigotResourcesAPI as a dependency
   <dependency>
     <groupId>com.github.robertlit</groupId>
     <artifactId>SpigotResourcesAPI</artifactId>
-    <version>1.3</version>
+    <version>VERSION</version>
   </dependency>
 </dependencies>
 ```
@@ -50,9 +51,6 @@ dependencies {
     implementation 'com.github.robertlit:SpigotResourcesAPI:1.3'
 }
 ```
-
-Or, clone the repository, install the artifact locally (using ```mvn install```, for example)
-and use the artifact information that is in the ```pom.xml``` file as a dependency.
 
 # Code exmaples
 ``` Java
@@ -77,6 +75,3 @@ future.thenAccept(resource -> {
   // ...
 });
 ```
-
-
-If this has helped you, please consider [donating via PayPal](https://www.paypal.me/robertlitmc).
